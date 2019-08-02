@@ -9,4 +9,5 @@ class Camera(object):
         self.frames = [open(f + '.jpg', 'rb').read() for f in ['1', '2', '3']]
 
     def get_frame(self):
-        return self.frames[int(time()) % 3]
+        fr = self.frames[int(time()) % 3]
+        return fr
