@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>SEER Demonstration</title>
+  </head>
+  <body>
+    <h1>SEER </h1>
+    <a href="{{ url_for('index') }}">Домой </a><br>
+  <hr>
+  Пока не реализовано
+    <a href="{{ url_for('upload') }}">Загрузить файл </a><br>
+  <hr>
+  <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+...
+<input type=file name=photo>
+...
+</form>
+  <hr>
+  </body>
+</html>

@@ -1,7 +1,16 @@
 Click==7.0
 Flask==1.1.1
+Flask-Uploads==0.2.1
+get==2019.4.13
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
+numpy==1.17.0
+opencv-contrib-python==4.1.0.25
+opencv-python==4.1.0.25
+post==2019.4.13
+public==2019.4.13
 python-dotenv==0.10.3
+query-string==2019.4.13
+request==2019.4.13
 Werkzeug==0.15.5

@@ -1,38 +1,49 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
 import logging
 import sys
 import os
 from multiprocessing import Process, current_process
 
-
-def trace1(file: object, lineno: object, name: object, pid: object, ppid: object, pr_name: object, dop: object = "") -> object:
-    print(f"\t\t\t@#$%| {file} {lineno}\t{name}\tpid={pid} \tparent pid={ppid}\t{pr_name} | {dop}")
-    ...
-
-
-trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name, os.environ)
+from utils import trace1
+from filesjpeg import FilesJpeg
+from video_file import VideoFile
 
 
-# emulated camera
-from camera import Camera
-
-# Raspberry Pi camera module (requires picamera package)
-from camera_file import Camera as CameraDemo
+UPLOAD_FOLDER = '.'
+ALLOWED_EXTENSIONS = {'mp4', 'avi'}
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 
 @app.route('/')
+@app.route('/index')
 def index():
     """Video streaming home page."""
     return render_template('index.html')
 
 
-@app.route('/demo/')
-def demo():
+@app.route('/seer')
+def seer():
     """Video streaming home page."""
-    return render_template('demo.html')
+    return render_template('seer.html')
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['the_file']
+        f.save('/var/www/uploads/' + secure_filename(f.filename))
+    ...
+
+
+@app.route('/demo_jpeg')
+def demo_jpeg():
+    """Video streaming home page."""
+    return render_template('demo_jpeg.html')
 
 
 def gen(camera):
@@ -42,26 +53,32 @@ def gen(camera):
     while True:
         trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
         count += 1
-        print(f'                           Out a new frame{count} ')
+        trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name,
+               f'                           Out a new frame{count} ')
         trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
         frame = camera.get_frame()
         trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@app.route('/video_feed')
-def video_feed():
+@app.route('/jpeg_files')
+def jpeg_files():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(FilesJpeg()), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/demo_feed')
-def demo_feed():
+@app.route('/demo_file')
+def demo_file():
+    """Video streaming home page."""
+    return render_template('demo_file.html')
+
+
+@app.route('/video_file')
+def video_file():
     """Video streaming route. Put this in the src attribute of an img tag."""
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    return Response(gen(CameraDemo()), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(VideoFile()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 def set_config(**kwargs):
     """
