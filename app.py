@@ -9,7 +9,6 @@ import os
 from multiprocessing import Process, current_process
 
 from utils import trace1
-from filesjpeg import FilesJpeg
 from video_file import VideoFile
 
 UPLOAD_FOLDER = './uploads'
@@ -17,13 +16,6 @@ ALLOWED_EXTENSIONS = set(['mp4', 'avi'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-@app.route('/src')
-@app.route('/index_src')
-def index_src():
-    """Video streaming home page."""
-    return render_template('index_src.html')
 
 
 @app.route('/')
@@ -74,43 +66,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-@app.route('/demo_jpeg')
-def demo_jpeg():
-    """Video streaming home page."""
-    return render_template('demo_jpeg.html')
-
-
-def gen(camera):
-    """Video streaming generator function."""
-    count = 0
-    trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    while True:
-        count += 1
-        trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name,
-               f'                           Out a new frame{count} ')
-        frame = camera.get_frame()
-        trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-        yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
-@app.route('/jpeg_files')
-def jpeg_files():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(FilesJpeg()), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-@app.route('/demo_file')
-def demo_file():
-    """Video streaming home page."""
-    return render_template('demo_file.html')
-
-
-@app.route('/video_file')
-def video_file():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    return Response(gen(VideoFile()), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 
 def set_config(**kwargs):
     """
@@ -134,4 +89,4 @@ if __name__ == '__main__':
     set_config()
     logging.debug("")
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name, os.environ)
-    app.run(host='0.0.0.0', debug=True, threaded=True)
+    app.run(host='127.0.0.1', debug=True, threaded=True)
