@@ -5,38 +5,24 @@
     <script src="../static/js/external/webix/codebase/webix.js" type="text/javascript" charset="utf-8"></script>
 </head>
   <body>
-  <div id="mainForm" align="center"></div>
+  <div id="mainImages" align="center">
+    <img src="/static/img/test.png"  width="600" height="600" > 1234
+  </div>
 
   <script type="text/javascript" charset="utf-8">
 
 	var form1 = [
-      { template:"SEER Demonstration ", type:"header" },
+      { template:"SEER Demonstration 234", type:"header" },
 		{ cols:[
-				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
+				{ view:"template", content: "mainImages",  width: 600, height:600},
 			]
 		},
-		{ view: "uploader", value: 'Добавить файл',
-			id: "file_uploader",
-			link:"mylist",  upload:"add_files",
-			autosend: false,
-			multiple: false,
-		},
-		{ view:"list",  id:"mylist", type:"uploader",
-			autoheight:true, borderless:true,
-			on_click:{
-				"remove_file":function(ev, id){
-					$$(this.config.uploader).files.remove(id);
-				}
-			},
-		},
-		{ margin:95, cols:[{ view:"button", value:"Отправить" , type:"form", click: save_form},]},
-		{ cols:[
-				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
-			]
-		},
+        { margin:95, cols:[
+					{ view:"button", value:"Получить json", width: 180, click: get_json},
+					]},
 	];
 		webix.ui(
-			{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,
+			{  align:"center,top", body:{ view:"form", container:"mainImages", id: "form_request",elements:form1,
 				scroll:false,  width:600 } }
 		);
 

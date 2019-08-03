@@ -9,10 +9,9 @@ import os
 from multiprocessing import Process, current_process
 
 from utils import trace1
-from video_file import VideoFile
 
 UPLOAD_FOLDER = './uploads'
-ALLOWED_EXTENSIONS = set(['mp4', 'avi'])
+ALLOWED_EXTENSIONS = set(['mp4', 'avi', 'py'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -23,6 +22,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def index():
     """Video streaming home page."""
     return render_template('index.html')
+
+
+@app.route('/result', methods=['GET', 'POST'])
+def result():
+    """Video streaming home page."""
+    trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
+    return render_template('result.html')
 
 
 @app.route('/add_files', methods=['POST'])
@@ -58,7 +64,24 @@ def add_files():
             if os.path.exists(full_path):
                 os.remove(full_path)
             submitted_file.save(full_path)
-            return redirect(url_for('index', filename=filename))
+            seconds = []
+            distributions = []
+            # for item in clf:
+            #     sec, distr = item
+            #     seconds.append(sec)
+            #     distributions.append(distr)
+            # visualizer.build_report_image(
+            #     seconds=np.array(seconds),
+            #     distributions=np.array(distributions),
+            #     labels=clf.get_labels(),
+            #     path=kwargs['image_report_path'],
+            # )
+            # return flask.send_file(kwargs['image_report_path'], mimetype='image/gif'), 200
+            filename = "static/img/test.png"
+            json_file = "static/img/test.json"
+            trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
+            # return redirect('result.html', pict=filename, json_file=json_file), 201
+            return redirect(url_for('result'))
     else:
         return render_template(url_for('index', title='Файл не отправлен'), 201)
 
