@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import pathlib as path
+from shutil import
 from flask import (Flask, render_template, Response, request, flash, request, redirect, url_for, render_template,
                     session, g)
 
@@ -19,51 +21,31 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/src')
+@app.route('/index_src')
+def index_src():
+    """Video streaming home page."""
+    return render_template('index_src.html')
+
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     """Video streaming home page."""
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_for_upload = path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if os.path.exists(file_for_upload):
+                os.remove(file_for_upload)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('index', filename=filename))
     return render_template('index.html')
 
 
-@app.route('/seer', methods=['GET', 'POST'])
-def seer():
-    """Video streaming home page."""
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('seer',
-                                    filename=filename))
-    return render_template('seer.html')
-
-
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-
-@app.route('/upload_file', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('upload_file',
-                                    filename=filename))
-    return '''
-    <!doctype html>
-    <title>Загрузить файл</title>
-    <h1>Загрузить файлe</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
-
-
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @app.route('/demo_jpeg')
@@ -77,11 +59,9 @@ def gen(camera):
     count = 0
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
     while True:
-        trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
         count += 1
         trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name,
                f'                           Out a new frame{count} ')
-        trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
         frame = camera.get_frame()
         trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
