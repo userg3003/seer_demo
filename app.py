@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import pathlib as path
-from shutil import
 from flask import (Flask, render_template, Response, request, flash, request, redirect, url_for, render_template,
                     session, g)
 
@@ -36,10 +34,10 @@ def index():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file_for_upload = path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            if os.path.exists(file_for_upload):
-                os.remove(file_for_upload)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            if os.path.exists(full_path):
+                os.remove(full_path)
+            file.save(full_path)
             return redirect(url_for('index', filename=filename))
     return render_template('index.html')
 
