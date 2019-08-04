@@ -56,16 +56,20 @@
 		if ($$("mylist").data.count() > 0)
 			$$("file_uploader").send(function(response){
         		<!--webix.message("Внимание !!!");-->
+        		console.log("1")
         		if(response)
+        		console.log("2")
           			<!--webix.message(response.status);-->
-          			webix.send("added_request");
+          			webix.send("result");
           	})
 		else
+        		consol.log("3")
 		   submit()
 	}
 	function submit(){
 		var params = $$("form_request").getValues()
-		webix.send("add_files", params, "POST");
+        		console.log("4")
+		<!--webix.send("add_files", params, "POST");-->
     }
 
 </script> </body>

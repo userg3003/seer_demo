@@ -18,7 +18,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/')
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     """Video streaming home page."""
     return render_template('index.html')
@@ -28,7 +28,7 @@ def index():
 def result():
     """Video streaming home page."""
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    return render_template('result.html')
+    return render_template('result_1.html')
 
 
 @app.route('/add_files', methods=['POST'])
@@ -80,10 +80,26 @@ def add_files():
             filename = "static/img/test.png"
             json_file = "static/img/test.json"
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-            # return redirect('result.html', pict=filename, json_file=json_file), 201
+            data = {
+                'info': {
+                    'id': "1000",
+                    'department': 'department1',
+                    "status": "success"
+                }
+            }
+            # f = rq.files['file']?
+            response = jsonify(data)
+            response.status_code = 201
+            trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
+            if submitted_file is not None:
+                trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
+                return response
+            trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
+
             return redirect(url_for('result'))
+            # return render_template('result_1.HTML')
     else:
-        return render_template(url_for('index', title='Файл не отправлен'), 201)
+        return render_template(url_for('index', title='Файл не отправлен'))
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
