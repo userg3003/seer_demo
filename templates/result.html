@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE  html>
   <head>
     <title>SEER Demonstration</title>
     <link rel="stylesheet" href="../static/js/external/webix/codebase/webix.css " type="text/css" charset="utf-8">
@@ -6,13 +6,22 @@
 </head>
   <body>
   <div id="mainImages" align="center">
-    <img src="/static/img/test.png"  width="600" height="600" > 1234
+    <img src="/static/img/test.png"  width="600" height="600" >
+
+    <hr>
+
+    <dl>
+   <dt>Num
+   <dd>{{ file_pict }}
+   <dt>Chord
+   <dd>{{ file_json }}
+</dl>
   </div>
 
   <script type="text/javascript" charset="utf-8">
 
 	var form1 = [
-      { template:"SEER Demonstration 222222222222222 ", type:"header" },
+      { template:"SEER result ", type:"header" },
 		{ cols:[
 				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
 			]
@@ -31,7 +40,7 @@
 				}
 			},
 		},
-		{ margin:95, cols:[{ view:"button", value:"Отправить" , type:"form", click: save_form},]},
+		{ margin:95, cols:[{ view:"button", value:"Получить json" , type:"form", click: get_json},]},
 		{ cols:[
 				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
 			]
@@ -43,6 +52,9 @@
 		);
 
     function get_json(){
+             var json = "{{ g.json  }}"
+    		webix.send("get_json", {"file_json": "{{ file_json }}" }, "POST");
+
     }
 
     function save_form(){

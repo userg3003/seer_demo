@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-from flask import (Flask, render_template, Response, request, flash, request, redirect, url_for, render_template,
-                    session, g, jsonify)
+from flask import (Flask, Response, flash, request, redirect, url_for, render_template,
+                    session, g, jsonify, current_app, send_from_directory)
 
 from werkzeug.utils import secure_filename
 import logging
 import sys
 import os
+import json
 from multiprocessing import Process, current_process
 
 from utils import trace1
@@ -15,12 +16,13 @@ ALLOWED_EXTENSIONS = set(['mp4', 'avi', 'py'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     """Video streaming home page."""
+    session["user"] = "user"
     return render_template('index.html')
 
 
@@ -28,7 +30,45 @@ def index():
 def result():
     """Video streaming home page."""
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    return render_template('result.html')
+    # file1 ={"file": "/static/img/test.png"}
+    # g.pict_filename = "static/img/test.png"
+    # g.json_file = "static/img/test.json"
+    # g.file = "/static/img/test.png"
+    # g.json = "/static/test.json"
+    # ggg = g.file
+    # file = getattr(g, 'file', None)
+    file_pict = session.pop('file_pict', None)
+    file_json = session.pop('file_json', None)
+    return render_template('result.html', file_pict=file_pict, file_json=file_json)
+
+
+@app.route('/get_json', methods=['POST'])
+def get_json():
+    """Video streaming home page."""
+    trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
+    # file1 ={"file": "/static/img/test.png"}
+    data = {
+        'info': {
+            'id': "1000",
+            'department': 'department1',
+            "status": "success"
+        }
+    }
+    response = jsonify(data)
+    response.status_code = 201
+
+   # def send_json_file(json_file_name):
+        # if image_binary is not None:
+        #     response = Response(image_binary[0]['files_data'])
+        #     buffer = io.BytesIO(image_binary[0]['files_data'])
+        #     # response.headers.set('Content-Type', 'image/jpeg')
+        #     # image_binary
+        #     # ext = "jpeg"
+        #     return send_from_directory(buffer,
+        #                      attachment_filename=image_binary[0]['files_fileName'],
+        #                      as_attachment=True, mimetype=image_binary[0]['files_mimetype'])
+
+    return jsonify(data)
 
 
 @app.route('/add_files', methods=['POST'])
@@ -77,17 +117,14 @@ def add_files():
             #     path=kwargs['image_report_path'],
             # )
             # return flask.send_file(kwargs['image_report_path'], mimetype='image/gif'), 200
-            filename = "static/img/test.png"
-            json_file = "static/img/test.json"
+            # {'json_name': kwargs['static_path'], 'image_path': kwargs['static_path']}
+
+            g.file = "static/img/test.png"
+            g.json = "static/img/test.json"
+            cccc = current_app
+            # app_co
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-            data = {
-                'info': {
-                    'id': "1000",
-                    'department': 'department1',
-                    "status": "success"
-                }
-            }
-            # f = rq.files['file']?
+            data = {}
             response = jsonify(data)
             response.status_code = 201
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
@@ -96,10 +133,34 @@ def add_files():
                 return response
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
 
-            return redirect(url_for('result'))
+            # return redirect(url_for('result', file_pict="file_pict1", file_json="file_json1"))
+            session['file_pict'] = "file_pict1"
+            session['file_json'] = "file_json1"
+            result = {'file_pict': "file_pict1",'file_json': "file_json1"}
+
+            messages = json.dumps({"main": "Condition failed on page baz"})
+            session['messages'] = messages
+            data = {
+                'info': {
+                    'id': "1000",
+                    'department': 'department1',
+                    "status": "success"
+                }
+            }
+            response = jsonify(data)
+            response.status_code = 201
+
+            return redirect(url_for('result', _method="GET"), 302, response)
+
+            # return redirect(url_for('result') , result=json.dumps(result))
+
+
             # return render_template('result_1.HTML')
     else:
         return render_template(url_for('index', title='Файл не отправлен'))
+
+
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
