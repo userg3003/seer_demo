@@ -9,67 +9,67 @@
     <img src="/static/img/test.png"  width="600" height="600" > 1234
   </div>
 
-  <!--<script type="text/javascript" charset="utf-8">-->
+  <script type="text/javascript" charset="utf-8">
 
-	<!--var form1 = [-->
-      <!--{ template:"SEER Demonstration 222222222222222 ", type:"header" },-->
-		<!--{ cols:[-->
-				<!--{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },-->
-			<!--]-->
-		<!--},-->
-		<!--{ view: "uploader", value: 'Добавить файл',-->
-			<!--id: "file_uploader",-->
-			<!--link:"mylist",  upload:"add_files",-->
-			<!--autosend: false,-->
-			<!--multiple: false,-->
-		<!--},-->
-		<!--{ view:"list",  id:"mylist", type:"uploader",-->
-			<!--autoheight:true, borderless:true,-->
-			<!--on_click:{-->
-				<!--"remove_file":function(ev, id){-->
-					<!--$$(this.config.uploader).files.remove(id);-->
-				<!--}-->
-			<!--},-->
-		<!--},-->
-		<!--{ margin:95, cols:[{ view:"button", value:"Отправить" , type:"form", click: save_form},]},-->
-		<!--{ cols:[-->
-				<!--{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },-->
-			<!--]-->
-		<!--},-->
-	<!--];-->
-		<!--webix.ui(-->
-			<!--{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,-->
-				<!--scroll:false,  width:600 } }-->
-		<!--);-->
+	var form1 = [
+      { template:"SEER Demonstration 222222222222222 ", type:"header" },
+		{ cols:[
+				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
+			]
+		},
+		{ view: "uploader", value: 'Добавить файл',
+			id: "file_uploader",
+			link:"mylist",  upload:"add_files",
+			autosend: false,
+			multiple: false,
+		},
+		{ view:"list",  id:"mylist", type:"uploader",
+			autoheight:true, borderless:true,
+			on_click:{
+				"remove_file":function(ev, id){
+					$$(this.config.uploader).files.remove(id);
+				}
+			},
+		},
+		{ margin:95, cols:[{ view:"button", value:"Отправить" , type:"form", click: save_form},]},
+		{ cols:[
+				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
+			]
+		},
+	];
+		webix.ui(
+			{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,
+				scroll:false,  width:600 } }
+		);
 
-    <!--function get_json(){-->
-    <!--}-->
+    function get_json(){
+    }
 
-    <!--function save_form(){-->
-		<!--var names = [];-->
-        <!--if ($$("mylist").data.each)-->
-        	<!--$$("mylist").data.each(function(obj){  names.push(obj.name);});-->
-        <!--var all_names =  names.join(", ");		$$("file_uploader").define("formData",-->
-		<!--{ file:"file", filename:  all_names});-->
+    function save_form(){
+		var names = [];
+        if ($$("mylist").data.each)
+        	$$("mylist").data.each(function(obj){  names.push(obj.name);});
+        var all_names =  names.join(", ");		$$("file_uploader").define("formData",
+		{ file:"file", filename:  all_names});
 
-		<!--var upl = $$("file_uploader")-->
-		<!--var fl = upl.getValue()-->
-		<!--var count_files = $$("mylist").data.count();-->
-		<!--if ($$("mylist").data.count() > 0)-->
-			<!--$$("file_uploader").send(function(response){-->
-        		<!--&lt;!&ndash;webix.message("Внимание !!!");&ndash;&gt;-->
-        		<!--if(response)-->
-          			<!--&lt;!&ndash;webix.message(response.status);&ndash;&gt;-->
-          			<!--webix.send("added_request");-->
-          	<!--})-->
-		<!--else-->
-		   <!--submit()-->
-	<!--}-->
-	<!--function submit(){-->
-		<!--var params = $$("form_request").getValues()-->
-		<!--webix.send("add_files", params, "POST");-->
-    <!--}-->
+		var upl = $$("file_uploader")
+		var fl = upl.getValue()
+		var count_files = $$("mylist").data.count();
+		if ($$("mylist").data.count() > 0)
+			$$("file_uploader").send(function(response){
+        		<!--webix.message("Внимание !!!");-->
+        		if(response)
+          			<!--webix.message(response.status);-->
+          			webix.send("added_request");
+          	})
+		else
+		   submit()
+	}
+	function submit(){
+		var params = $$("form_request").getValues()
+		webix.send("add_files", params, "POST");
+    }
 
-<!--</script> -->
-  <!--</body>-->
+</script>
+  </body>
 </html>

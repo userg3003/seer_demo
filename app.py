@@ -28,7 +28,7 @@ def index():
 def result():
     """Video streaming home page."""
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    return render_template('result_1.html')
+    return render_template('result.html')
 
 
 @app.route('/add_files', methods=['POST'])
