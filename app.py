@@ -64,6 +64,10 @@ def add_files():
             if os.path.exists(full_path):
                 os.remove(full_path)
             submitted_file.save(full_path)
+            file_name_pict = "seer_result.png"
+            file_name_json = "seer_result.json"
+            path_for_pict = f"./static/img/{file_name_pict}"
+            path_for_json = f"./static/{file_name_json}"
             seconds = []
             distributions = []
             # for item in clf:
@@ -76,14 +80,12 @@ def add_files():
             #     labels=clf.get_labels(),
             #     path=kwargs['image_report_path'],
             # )
-            # return flask.send_file(kwargs['image_report_path'], mimetype='image/gif'), 200
-            # {'json_name': kwargs['static_path'], 'image_path': kwargs['static_path']}
 
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
             data = {
                 'info': {
-                    'file_pict_name': "test.png",
-                    'file_json_name': 'test_json.json',
+                    'file_pict_name': file_name_pict,
+                    'file_json_name': file_name_json,
                     "status": "success"
                 }
             }
@@ -94,30 +96,7 @@ def add_files():
                 trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
                 return response
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-
-            # return redirect(url_for('result', file_pict="file_pict1", file_json="file_json1"))
-            session['file_pict'] = "file_pict1"
-            session['file_json'] = "file_json1"
-            result = {'file_pict': "file_pict1",'file_json': "file_json1"}
-
-            messages = json.dumps({"main": "Condition failed on page baz"})
-            session['messages'] = messages
-            data = {
-                'info': {
-                    'id': "1000",
-                    'department': 'department1',
-                    "status": "success"
-                }
-            }
-            response = jsonify(data)
-            response.status_code = 201
-
-            return redirect(url_for('result', _method="GET"), 302, response)
-
-            # return redirect(url_for('result') , result=json.dumps(result))
-
-
-            # return render_template('result_1.HTML')
+            return redirect(url_for('index', _method="GET"), 302)
     else:
         return render_template(url_for('index', title='Файл не отправлен'))
 

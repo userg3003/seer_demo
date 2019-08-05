@@ -24,7 +24,7 @@
 			multiple: false,
 		},
 		{ view:"list",  id:"mylist", type:"uploader",
-			autoheight:true, borderless:true,
+			autoheight: true, borderless: true,
 			on_click:{
 				"remove_file":function(ev, id){
 					$$(this.config.uploader).files.remove(id);
@@ -37,13 +37,11 @@
 			]
 		},
 	];
-		webix.ui(
+
+	webix.ui(
 			{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,
 				scroll:false,  width:600 } }
 		);
-
-    function get_json(){
-    }
 
     function save_form(){
 		var names = [];
