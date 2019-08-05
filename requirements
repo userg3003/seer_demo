@@ -1,0 +1,9 @@
+Flask==1.1.1
+keras==2.0.5
+tensorflow==1.14.0
+opencv-python==3.4.5.20
+request==2019.4.13
+Werkzeug==0.15.5
+pillow==5.4.1
+numpy==1.16.4
+scipy==1.2.2

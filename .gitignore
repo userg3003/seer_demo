@@ -103,3 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 .idea/
+
+data/*.mp4
+data/*.png
+data/*.hdf5
+

@@ -1,0 +1,15 @@
+version: '3'
+services:
+    service:
+        restart: always
+        environment:
+            - PYTHON=python3.7
+            - GRADER_REST_CONFIG=../.envs/docker.env
+            - BRANCH_NAME=merge
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "10012:10012"
+        volumes:
+            - .:/app

@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>SEER Demonstration</title>
+    <link rel="stylesheet" href="../static/js/external/webix/codebase/webix.css " type="text/css" charset="utf-8">
+    <script src="../static/js/external/webix/codebase/webix.js" type="text/javascript" charset="utf-8"></script>
+</head>
+  <body>
+
+  <script type="text/javascript" charset="utf-8">
+
+	var form1 = [
+      { template:"SEER result ", type:"header" },
+		{ cols:[
+				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
+			]
+		},
+		{ view:"list",  id:"mylist", type:"uploader",
+			autoheight:true, borderless:true,
+			on_click:{
+				"remove_file":function(ev, id){
+					$$(this.config.uploader).files.remove(id);
+				}
+			},
+		},
+		{ margin:95, cols:[{ view:"button", value:"Получить json" , type:"form", click: get_json},]},
+        { margin:95, cols:[{ view:"button", value:"Получить график" , type:"form", click: get_image},]},
+        { margin:95, cols:[{ view:"button", value:"Назад" , type:"form", click: back},]},
+		{ cols:[
+				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
+			]
+		},
+	];
+		webix.ui(
+			{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,
+				scroll:false,  width:600 } }
+		);
+
+    function get_json(){
+    		webix.send("get_json", {}, "GET");
+
+    }
+
+    function get_image(){
+    		webix.send("get_image", {}, "GET");
+
+    }
+
+    function back(){
+    		webix.send("index", {}, "GET");
+
+    }
+
+</script>
+  </body>
+</html>
