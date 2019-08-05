@@ -30,16 +30,8 @@ def index():
 def result():
     """Video streaming home page."""
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    # file1 ={"file": "/static/img/test.png"}
-    # g.pict_filename = "static/img/test.png"
-    # g.json_file = "static/img/test.json"
-    # g.file = "/static/img/test.png"
-    # g.json = "/static/test.json"
-    # ggg = g.file
-    # file = getattr(g, 'file', None)
-    file_pict = session.pop('file_pict', None)
-    file_json = session.pop('file_json', None)
-    return render_template('result.html', file_pict=file_pict, file_json=file_json)
+    req = request.form.to_dict()
+    return render_template('result.html', file_pict=req["file_pict_name"], file_json=req["file_json_name"])
 
 
 @app.route('/get_json', methods=['POST'])
@@ -124,7 +116,13 @@ def add_files():
             cccc = current_app
             # app_co
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-            data = {}
+            data = {
+                'info': {
+                    'file_pict_name': "test.png",
+                    'file_json_name': 'test_json.json',
+                    "status": "success"
+                }
+            }
             response = jsonify(data)
             response.status_code = 201
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)

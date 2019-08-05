@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
-    <title>SEER Demonstration</title>
+    <title>Демонстрация SEER</title>
     <link rel="stylesheet" href="../static/js/external/webix/codebase/webix.css " type="text/css" charset="utf-8">
     <script src="../static/js/external/webix/codebase/webix.js" type="text/javascript" charset="utf-8"></script>
 </head>
@@ -12,7 +12,7 @@
   <script type="text/javascript" charset="utf-8">
 
 	var form1 = [
-      { template:"SEER Demonstration ", type:"header" },
+      { template:"Демонстрация SEER", type:"header" },
 		{ cols:[
 				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
 			]
@@ -62,7 +62,7 @@
         		if(response)
         		console.log("2")
           			<!--webix.message(response.status);-->
-          			webix.send("result");
+          			webix.send("result", response.info);
           	})
 		else
         		consol.log("3")
