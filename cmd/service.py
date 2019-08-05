@@ -41,6 +41,7 @@ def get_image():
 
 @app.route('/add_files', methods=['POST'])
 def add_files():
+    print('XXXXXXXX')
     submitted_file = None
     if len(request.files) > 0:
         submitted_file = request.files['upload']

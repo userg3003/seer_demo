@@ -51,7 +51,7 @@
 		if ($$("mylist").data.count() > 0)
 			$$("file_uploader").send(function(response){
         		if(response)
-          			webix.send("result");
+          			webix.send("result", {}, "GET");
           	});
 	}
 
