@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from flask import (Flask, Response, flash, request, redirect, url_for, render_template,
-                    session, g, jsonify, current_app, send_from_directory)
+from flask import (Flask,  request, redirect, url_for, render_template,
+                    session, g, jsonify, current_app)
 
 from werkzeug.utils import secure_filename
 import logging
@@ -16,51 +16,20 @@ ALLOWED_EXTENSIONS = set(['mp4', 'avi', 'py'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    """Video streaming home page."""
-    session["user"] = "user"
+    """SEER home page."""
     return render_template('index.html')
 
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
-    """Video streaming home page."""
+    """SEER result page."""
     trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
     req = request.form.to_dict()
     return render_template('result.html', file_pict=req["file_pict_name"], file_json=req["file_json_name"])
-
-
-@app.route('/get_json', methods=['POST'])
-def get_json():
-    """Video streaming home page."""
-    trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
-    # file1 ={"file": "/static/img/test.png"}
-    data = {
-        'info': {
-            'id': "1000",
-            'department': 'department1',
-            "status": "success"
-        }
-    }
-    response = jsonify(data)
-    response.status_code = 201
-
-   # def send_json_file(json_file_name):
-        # if image_binary is not None:
-        #     response = Response(image_binary[0]['files_data'])
-        #     buffer = io.BytesIO(image_binary[0]['files_data'])
-        #     # response.headers.set('Content-Type', 'image/jpeg')
-        #     # image_binary
-        #     # ext = "jpeg"
-        #     return send_from_directory(buffer,
-        #                      attachment_filename=image_binary[0]['files_fileName'],
-        #                      as_attachment=True, mimetype=image_binary[0]['files_mimetype'])
-
-    return jsonify(data)
 
 
 @app.route('/add_files', methods=['POST'])
@@ -79,7 +48,6 @@ def add_files():
             error = True
             logging.getLogger().debug(f"count_error={count_error}  Error:{err} ")
     logging.getLogger().debug("")
-
 
     logging.getLogger().debug(request.form.to_dict())
     if len(request.files) > 0:
@@ -111,10 +79,6 @@ def add_files():
             # return flask.send_file(kwargs['image_report_path'], mimetype='image/gif'), 200
             # {'json_name': kwargs['static_path'], 'image_path': kwargs['static_path']}
 
-            g.file = "static/img/test.png"
-            g.json = "static/img/test.json"
-            cccc = current_app
-            # app_co
             trace1(__file__, sys._getframe().f_lineno, __name__, os.getpid(), os.getppid(), current_process().name)
             data = {
                 'info': {

@@ -20,26 +20,15 @@
 
 	var form1 = [
       { template:"Результат SEER", type:"header" },
-		{ cols:[
-				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
-			]
-		},
-        { template: "Тест template",
-        content: "mainImages",
-        width: 600,
-        height: 600},
-        { template: "Тест template 2",
-        content: "get_json",
-        width: 600,
-        height:50},
-        { template: "Тест template 3",
-        content: "to_main",
-        width: 600,
-        height: 30},
+        { template: "Тест template", content: "mainImages", width: 600, height: 600},
+        { cols: [
+        { template: "Тест template 2", content: "get_json"},
+        { template: "Тест template 3", content: "to_main", height: 30 },
+        ] },
 	];
 		webix.ui(
 			{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,
-				scroll:false,  width:600 } }
+				scroll:false,  width:700 } }
 		);
 
 </script>
