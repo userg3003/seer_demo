@@ -41,16 +41,15 @@ def get_image():
 
 @app.route('/add_files', methods=['POST'])
 def add_files():
-    print('XXXXXXXX')
     submitted_file = None
     if len(request.files) > 0:
         submitted_file = request.files['upload']
+    print(submitted_file)
 
     if submitted_file is not None:
         filename = submitted_file.filename
         if allowed_file(filename):
-            filename = secure_filename(filename)
-            full_path = os.path.join(kwargs['upload_folder'], filename)
+            full_path = os.path.join(kwargs['upload_folder'], 'video.mp4')
             if os.path.exists(full_path):
                 os.remove(full_path)
             submitted_file.save(full_path)

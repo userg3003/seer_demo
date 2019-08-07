@@ -36,12 +36,12 @@
 		);
 
     function get_json(){
-    		webix.send("get_json", {}, "GET");
+        webix.ajax("get_json", { uid:webix.uid() }, "GET");
 
     }
 
     function get_image(){
-    		webix.send("get_image", {}, "GET");
+    		webix.send("get_image", { uid:webix.uid() }, "GET");
 
     }
 

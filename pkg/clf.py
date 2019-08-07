@@ -1,7 +1,6 @@
 import typing
 
 import cv2
-import keras
 import numpy as np
 
 from pkg.io import readers
