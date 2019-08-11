@@ -1,5 +1,21 @@
 import json
+# -----------
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+import time
 
+basedir = Path(__file__).resolve().parent.parent
+
+CONFIG_NAME = os.environ.get('SEER_CONFIG') or './.envs/service.env'
+env_file = Path.joinpath(basedir, CONFIG_NAME)
+
+print(f"ENVIRON:\n{os.environ}")
+load_dotenv(dotenv_path=env_file)
+print(f"CONFIG_NAME: {CONFIG_NAME} ")
+print(f"ENVIRON:\n{os.environ}")
+
+# ====================
 from flask import Flask, request, render_template, jsonify, url_for, g, send_file
 import numpy as np
 from keras import models as keras_models
@@ -15,8 +31,10 @@ from pkg import clf as clf_pkg
 from pkg.io import readers
 from pkg.utils import visualizer, inference
 
-
-app = Flask(os.getenv('SERVICE_NAME'), template_folder=os.getenv('SERVICE_TEMPLATES_FOLDER'))
+static_path = str(Path.joinpath(basedir, "static"))
+app = Flask(os.getenv('SERVICE_NAME'), template_folder=os.getenv('SERVICE_TEMPLATES_FOLDER'), static_folder='../static')
+# app = Flask(os.getenv('SERVICE_NAME'), template_folder=os.getenv('SERVICE_TEMPLATES_FOLDER'),
+#             static_folder="../static")
 kwargs = None
 graph = None
 
@@ -30,13 +48,13 @@ def result():
 @app.route('/get_json', methods=['GET'])
 def get_json():
     """Video streaming home page."""
-    data = json.load(open('static/data.json'))
+    data = json.load(open('../static/data.json'))
     return jsonify(data)
 
 
 @app.route('/get_image', methods=['GET'])
 def get_image():
-    return send_file('static/img/test.png', mimetype='image/gif'), 200
+    return send_file('../static/img/test.png', mimetype='image/gif'), 200
 
 
 @app.route('/add_files', methods=['POST'])
@@ -44,12 +62,11 @@ def add_files():
     submitted_file = None
     if len(request.files) > 0:
         submitted_file = request.files['upload']
-    print(submitted_file)
 
     if submitted_file is not None:
         filename = submitted_file.filename
         if allowed_file(filename):
-            full_path = os.path.join(kwargs['upload_folder'], 'video.mp4')
+            full_path = os.path.join(kwargs['upload_folder'], kwargs['video_name'])
             if os.path.exists(full_path):
                 os.remove(full_path)
             submitted_file.save(full_path)
@@ -63,17 +80,17 @@ def add_files():
                 seconds=np.array(seconds),
                 distributions=np.array(distributions),
                 labels=clf.get_labels(),
-                path="static/img/test.png",  # kwargs['image_report_path'],
+                path="../static/img/test.png",  # kwargs['image_report_path'],
             )
 
-            g.file = "static/img/test.png"
-            g.json = "static/img/test.json"
+            g.file = "../static/img/test.png"
+            g.json = "../static/img/test.json"
             data = {
                 'seconds': np.array(seconds).tolist(),
                 'distributions': np.array(distributions).tolist(),
                 'labels': clf.get_labels(),
             }
-            with open('static/data.json', 'w') as fd:
+            with open('../static/data.json', 'w') as fd:
                 json.dump(data, fd)
             return data, 200
     else:
@@ -117,6 +134,7 @@ def init():
 
 
 if __name__ == '__main__':
+
     kwargs = compose.service()
     init()
 
@@ -128,4 +146,5 @@ if __name__ == '__main__':
         emotion_detector=emotion_classifier,
         graph=graph,
     )
-    app.run(host='0.0.0.0', port=10012, debug=False)
+    # app.run(host='0.0.0.0', port=10012, debug=False)
+    app.run(host='127.0.0.1', port=10012, debug=False)

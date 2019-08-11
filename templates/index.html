@@ -31,11 +31,15 @@
 				}
 			},
 		},
-		{ margin:95, cols:[{ view:"button", id:"submit", value:"Отправить" , type:"form", click: save_form},]},
-		{ cols:[
-				{ view:"label", label:'  ', height:20, align:"left", inputWidth: 120, maxWidth: 120  },
-			]
-		},
+		{ margin:95, cols:[
+		    { view:"button", id:"submit", value:"Отправить" , type:"form", click: save_form},
+
+            ]},
+        { id: "work", view:"template", template: " ", width: 360, height: 60, type:"clean", autoheight:true, align: "center"   },
+		{#{ cols:[#}
+		{#		{ view:"label", label:'  ', height:20, align:"left", inputWidth: 70, maxWidth: 70  },#}
+		{#	]#}
+		{#},#}
 	];
 		webix.ui(
 			{  align:"center,top", body:{ view:"form", container:"mainForm", id: "form_request",elements:form1,
@@ -49,9 +53,13 @@
         var all_names =  names.join(", ");		$$("file_uploader").define("formData",
 		{ file:"file", filename:  all_names});s = $$("mylist").data.count();
 		if ($$("mylist").data.count() > 0)
+		   $$("work").setHTML("<p align=\"center\"> Выполняется " +
+               "<img src=\"../static/img/work.gif\"  width=\"30\" height=\"30\" align=\"middle\"/> обработка. </p>");
 			$$("file_uploader").send(function(response){
-        		if(response)
-          			webix.send("result", {}, "GET");
+        		if(response) {
+                    $$("work").setHTML("");
+                    webix.send("result", {}, "GET");
+                }
           	});
 	}
 
