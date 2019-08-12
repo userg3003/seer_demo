@@ -2,6 +2,7 @@ import typing
 
 import cv2
 import numpy as np
+from tqdm import tqdm
 
 from pkg.io import readers
 from pkg.utils import inference
@@ -61,7 +62,7 @@ class EmotionClassifier:
         return labels
 
     def __iter__(self):
-        for i, item in enumerate(self.__reader):
+        for i, item in tqdm(enumerate(self.__reader)):
             second, bgr_frame = item
             gray_image = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2GRAY)
             faces = inference.detect_faces(self.__face_detector, gray_image)
