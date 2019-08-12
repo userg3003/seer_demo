@@ -1,3 +1,4 @@
+import logging
 import typing
 
 import cv2
@@ -61,8 +62,12 @@ class EmotionClassifier:
         return labels
 
     def __iter__(self):
+        prev_sec = -1
         for i, item in enumerate(self.__reader):
             second, bgr_frame = item
+            if prev_sec != int(second):
+                logging.info(second)
+                prev_sec = int(second)
             gray_image = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2GRAY)
             faces = inference.detect_faces(self.__face_detector, gray_image)
 
