@@ -54,6 +54,7 @@ def desktop():
 
 
 def service():
+    env1 = getenv('VIDEO_NAME')
     args = argparse.ArgumentParser()
     args.add_argument(
         '--video-name',
