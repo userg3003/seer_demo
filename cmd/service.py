@@ -24,23 +24,27 @@ graph = None
 @app.route('/result', methods=['GET'])
 def result():
     """Video streaming home page."""
+    logging.info("get_json")
     return render_template('result.html')
 
 
 @app.route('/get_json', methods=['GET'])
 def get_json():
     """Video streaming home page."""
+    logging.info("get_json")
     data = json.load(open('static/data.json'))
     return jsonify(data)
 
 
 @app.route('/get_image', methods=['GET'])
 def get_image():
+    logging.info("get_image")
     return send_file('static/img/test.png', mimetype='image/gif'), 200
 
 
 @app.route('/add_files', methods=['POST'])
 def add_files():
+    logging.info("add_files")
     submitted_file = None
     if len(request.files) > 0:
         submitted_file = request.files['upload']
@@ -83,6 +87,7 @@ def add_files():
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
+    logging.info("index")
     return render_template('index.html')
 
 
