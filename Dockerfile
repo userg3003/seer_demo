@@ -18,4 +18,5 @@ RUN git checkout $BRANCH_NAME
 RUN make deps
 RUN pip3 install matplotlib
 RUN pip3 install pandas
+RUN pip3 install tqdm
 CMD PYTHON=python3.7 PIP=pip3.7 make run
