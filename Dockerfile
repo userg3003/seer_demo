@@ -1,6 +1,6 @@
 FROM ubuntu:18.04 AS BUILD
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get -y update && apt-get -y upgrade
 RUN apt-get install -y python3.7 python3-pip cmake make libsm6 libxext6 libxrender-dev
 RUN python3.7 -m pip install --upgrade pip
 RUN apt-get install -y git

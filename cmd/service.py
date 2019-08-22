@@ -124,6 +124,14 @@ def init():
 if __name__ == '__main__':
     kwargs = compose.service()
     init()
+    log_level = kwargs.get('logging_level', logging.DEBUG)
+    log_format = '%(asctime)-15s %(levelname)s [%(name)s] [in %(pathname)-10s:%(funcName)-20s:%(lineno)-5d]: ' \
+                 '%(message)s'
+    logging.basicConfig(
+        format=log_format,
+        level=log_level,
+        filemode='w',
+    )
 
     reader = readers.VideoFileReader(kwargs['upload_folder']+kwargs['video_name'])
     clf = clf_pkg.EmotionClassifier(
