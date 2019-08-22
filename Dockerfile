@@ -8,7 +8,7 @@ RUN apt-get install -y git
 RUN git clone https://github.com/opencv/opencv.git
 WORKDIR /opencv/build
 RUN cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..
-RUN make -j10
+RUN make -j4
 RUN make install
 
 COPY . /app
